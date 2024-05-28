@@ -58,6 +58,16 @@ public class Spliter implements Serializable {
 
     // ----------------------------------------------------------------
 
+    public String sensitive() {
+        return this.sensitive;
+    }
+
+    public Integer length() {
+        return this.length;
+    }
+
+    // ----------------------------------------------------------------
+
     public Integer determineSegmentLength() {
         if (Objects.isNull(this.length)) {
             return DEFAULT_SEGMENT_LENGTH;
@@ -117,6 +127,7 @@ public class Spliter implements Serializable {
             return new Spliter(this.sensitive, this.length);
         }
 
+        @Override
         public String toString() {
             return "Spliter.SpliterBuilder(sensitive=" + this.sensitive + ", length=" + this.length + ")";
         }
@@ -131,7 +142,7 @@ public class Spliter implements Serializable {
         List<String> segments = new ArrayList<>();
         int delta = this.sensitive.length() - segmentLength;
         if (delta < 0) {
-            String padded = this.padding(this.getSensitive(), delta);
+            String padded = this.padding(this.sensitive(), delta);
             segments.add(padded);
 
             return segments;
@@ -146,17 +157,18 @@ public class Spliter implements Serializable {
     }
 
     private void check() {
-        if (null == this.getSensitive() || this.getSensitive().isEmpty()) {
-            throw new IllegalArgumentException("Sensitive word is invalid");
+        if (null == this.sensitive() || this.sensitive().isEmpty()) {
+            throw new IllegalArgumentException("Sensitive field is invalid");
         }
     }
 
     private String padding(String segment, int delta) {
-        StringBuilder buf = new StringBuilder(segment);
-        for (int i = 0; i < Math.abs(delta); i++) {
-            buf.append(DEFAULT_SEGMENT_PADDING_CHAR);
-        }
+        Padding padding = Padding.builder()
+                .segment(segment)
+                .delta(delta)
+                .pad(DEFAULT_SEGMENT_PADDING_CHAR)
+                .build();
 
-        return buf.toString();
+        return padding.rightPadding();
     }
 }
