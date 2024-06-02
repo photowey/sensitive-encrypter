@@ -14,6 +14,20 @@
     <description>The api module of sensitive-encrypter.</description>
 
     <dependencies>
+        <dependency>
+            <groupId>io.github.photowey</groupId>
+            <artifactId>sensitive-encrypter-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.github.photowey</groupId>
+            <artifactId>spring-project-infras-core</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
 
 </project>
