@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.photowey.sensitive.encrypter.api.handler;
+package io.github.photowey.sensitive.encrypter.api.encrypter;
 
 import io.github.photowey.sensitive.encrypter.core.domain.model.Padding;
 import io.github.photowey.sensitive.encrypter.core.domain.model.Spliter;
@@ -70,22 +70,8 @@ public interface PhoneNumberEncrypter extends NumberEncrypter {
 
     // ----------------------------------------------------------------
 
-    default void check(String phoneNumber) {
-        if (this.isEmpty(phoneNumber) || phoneNumber.length() != this.phoneNumberLength()) {
-            throw new IllegalArgumentException(String.format("PhoneNumber[%s] is invalid", phoneNumber));
-        }
-    }
-
-    default void checkRelax(String phoneNumber) {
-        if (this.isEmpty(phoneNumber)) {
-            throw new IllegalArgumentException(String.format("PhoneNumber[%s] is invalid", phoneNumber));
-        }
-    }
-
-    // ----------------------------------------------------------------
-
     default List<String> split(String phoneNumber) {
-        this.check(phoneNumber);
+        this.check(phoneNumber, this.phoneNumberLength());
         int segmentLength = this.splitSegmentLength();
 
         Spliter spliter = Spliter.builder()

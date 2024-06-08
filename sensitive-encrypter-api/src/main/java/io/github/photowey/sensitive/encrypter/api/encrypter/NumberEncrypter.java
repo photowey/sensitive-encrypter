@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.photowey.sensitive.encrypter.api.handler;
+package io.github.photowey.sensitive.encrypter.api.encrypter;
 
 import io.github.photowey.spring.infras.core.strategy.OrderedBeanFactoryStrategySupporter;
 
@@ -37,5 +37,21 @@ public interface NumberEncrypter extends OrderedBeanFactoryStrategySupporter {
 
     default boolean isEmpty(String sequence) {
         return null == sequence || sequence.trim().isEmpty();
+    }
+
+    default void check(String number, int fixed) {
+        this.check(number, fixed, fixed);
+    }
+
+    default void check(String number, int min, int max) {
+        if (this.isEmpty(number) || (number.length() < min || number.length() > max)) {
+            throw new IllegalArgumentException(String.format("Number[%s] is invalid", number));
+        }
+    }
+
+    default void checkRelax(String number) {
+        if (this.isEmpty(number)) {
+            throw new IllegalArgumentException(String.format("Number[%s] is invalid", number));
+        }
     }
 }
